@@ -13,8 +13,10 @@ import compression from 'compression'
 import { config } from './config'
 import applicationRoutes from './routes'
 import { IErrorResponse, CustomError } from './share/globals/helpers/errorHandler';
+import Logger from 'bunyan'
 
 const SERVER_PORT = 5000
+const log: Logger = config.createLogger('setupServer')
 
 export class ChattyServer {
     private app: Application;
@@ -68,12 +70,12 @@ export class ChattyServer {
     }
 
     private globalErrorHandler(app: Application): void {
-        app.all('*', (req: Request, res: Response) => {
+        app.all('*', (req: Request, res: Response): void => {
             res.status(HTTP_STATUS.NOT_FOUND).json({ message: `${req.originalUrl} not found` })
         })
 
         app.use((error: IErrorResponse, req: Request, res: Response, next: NextFunction) => {
-            console.log(error)
+            log.error(error)
             if (error instanceof CustomError) {
                 return res.status(error.statusCode).json(error.serializeErrors())
             }
@@ -88,7 +90,7 @@ export class ChattyServer {
             this.startHttpServer(httpServer)
             this.socketIOConnection(socketIO)
         } catch (error) {
-            console.log(error)
+            log.error(error)
         }
     }
 
@@ -109,7 +111,7 @@ export class ChattyServer {
 
     private startHttpServer(httpServer: http.Server): void {
         httpServer.listen(SERVER_PORT, () => {
-            console.log(`端口${SERVER_PORT}成功运行`) //暂时
+            log.info(`端口${SERVER_PORT}成功运行`) //暂时
         })
     }
 

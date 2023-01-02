@@ -1,14 +1,17 @@
 import mongoose from "mongoose";
+import Logger from 'bunyan'
 import { config } from './config'
+
+const log: Logger = config.createLogger('setupDatabase')
 
 export default () => {
     const connect = () => {
         mongoose.connect(config.DATABASE_URL!)
             .then(() => {
-                console.log('链接到数据库')
+                log.info('链接到数据库')
             })
             .catch((error) => {
-                console.log('Error connecting database');
+                log.error('Error connecting database');
                 return process.exit(1)
             })
     }
