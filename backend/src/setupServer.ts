@@ -12,14 +12,14 @@ import { createAdapter } from '@socket.io/redis-adapter'
 import compression from 'compression'
 import { config } from './config'
 import applicationRoutes from './routes'
-import { IErrorResponse, CustomError } from './share/globals/helpers/errorHandler';
+import { IErrorResponse, CustomError } from './share/globals/helpers/errorHandler'
 import Logger from 'bunyan'
 
 const SERVER_PORT = 5000
 const log: Logger = config.createLogger('setupServer')
 
 export class ChattyServer {
-    private app: Application;
+    private app: Application
 
     constructor(app: Application) {
         this.app = app
