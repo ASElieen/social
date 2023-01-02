@@ -12,7 +12,7 @@ import { createAdapter } from '@socket.io/redis-adapter'
 import compression from 'compression'
 import { config } from './config'
 import applicationRoutes from './routes'
-import { IErrorResponse, CustomError } from './share/globals/helpers/errorHandler'
+import { IErrorResponse, CustomError } from '@global/helpers/errorHandler'
 import Logger from 'bunyan'
 
 const SERVER_PORT = 5000
