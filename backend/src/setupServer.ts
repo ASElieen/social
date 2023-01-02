@@ -11,6 +11,7 @@ import { createClient } from 'redis'
 import { createAdapter } from '@socket.io/redis-adapter'
 import compression from 'compression'
 import { config } from './config'
+import applicationRoutes from './routes'
 
 const SERVER_PORT = 5000
 
@@ -62,7 +63,7 @@ export class ChattyServer {
     }
 
     private routesMiddleware(app: Application): void {
-
+        applicationRoutes(app)
     }
 
     private globalErrorHandler(app: Application): void {
@@ -96,7 +97,6 @@ export class ChattyServer {
     }
 
     private startHttpServer(httpServer: http.Server): void {
-
         httpServer.listen(SERVER_PORT, () => {
             console.log(`端口${SERVER_PORT}成功运行`) //暂时
         })
