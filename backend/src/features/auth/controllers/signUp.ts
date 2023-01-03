@@ -8,6 +8,7 @@ import { BadRequestError } from '@helpers/errorHandler'
 import { Helpers } from '@global/helpers/helpers'
 import { UploadApiResponse } from 'cloudinary'
 import { uploads } from '@helpers/cloudinaryUpload'
+import HTTP_STATUS from 'http-status-codes'
 
 export class SignUp {
     @joiValidation(signupSchema)
@@ -36,6 +37,8 @@ export class SignUp {
         if (!result?.public_id) {
             throw new BadRequestError('文件上传失败,发生了某些错误,请重试')
         }
+
+        res.status(HTTP_STATUS.CREATED).json({ message: 'User created successfully', authData })
     }
 
     private signUpData(data: ISignUpData): IAuthDocument {
