@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 import Logger from 'bunyan'
 import { config } from './config'
 
@@ -11,7 +11,7 @@ export default () => {
                 log.info('链接到数据库')
             })
             .catch((error) => {
-                log.error('Error connecting database');
+                log.error('Error connecting database')
                 return process.exit(1)
             })
     }
