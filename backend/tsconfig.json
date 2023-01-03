@@ -46,6 +46,9 @@
       ],
       "@root/*": [
         "src/*"
+      ],
+      "@auth/*": [
+        "src/features/auth/*"
       ]
     }
   }
