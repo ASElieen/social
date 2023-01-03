@@ -40,7 +40,7 @@ export class BadRequestError extends CustomError {
     }
 }
 
-export class RequestValidationError extends CustomError {
+export class JoiRequestValidationError extends CustomError {
     statusCode = HTTP_STATUS.BAD_REQUEST
     status = 'error'
 
