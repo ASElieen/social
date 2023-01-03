@@ -49,6 +49,9 @@
       ],
       "@auth/*": [
         "src/features/auth/*"
+      ],
+      "@helpers/*": [
+        "src/share/globals/helpers/*"
       ]
     }
   }
