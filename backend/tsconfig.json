@@ -55,6 +55,9 @@
       ],
       "@user/*": [
         "src/features/user/*"
+      ],
+      "@redis/*": [
+        "src/share/services/redis/*"
       ]
     }
   }
