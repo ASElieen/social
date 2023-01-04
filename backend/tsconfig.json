@@ -52,6 +52,9 @@
       ],
       "@helpers/*": [
         "src/share/globals/helpers/*"
+      ],
+      "@user/*": [
+        "src/features/user/*"
       ]
     }
   }
