@@ -59,11 +59,11 @@ export class SignUp {
         userQueue.addUserJob('addUserToDB', { value: userDataForCache })
 
         //token
-        const userJWT: string = SignUp.prototype.signUpToken(authData, userObjectID)
+        const userJWT: string = SignUp.prototype.signToken(authData, userObjectID)
         //存入session
         req.session = { jwt: userJWT }
 
-        res.status(HTTP_STATUS.CREATED).json({ message: 'User created successfully', authData })
+        res.status(HTTP_STATUS.CREATED).json({ message: 'User created successfully', user: userDataForCache, token: userJWT })
     }
 
     private signUpData(data: ISignUpData): IAuthDocument {
@@ -79,7 +79,7 @@ export class SignUp {
         } as IAuthDocument
     }
 
-    private signUpToken(data: IAuthDocument, userObjectId: ObjectId): string {
+    private signToken(data: IAuthDocument, userObjectId: ObjectId): string {
         //按需选择数据信息添加到cookie
         //参数1 信息对象 2秘钥(随机生成) 3过期时间
         return JWT.sign({
