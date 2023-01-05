@@ -15,6 +15,7 @@ import { config } from '@root/config'
 import { omit } from 'lodash'
 import { authQueue } from '@services/queues/auth.queue'
 import { userQueue } from '@services/queues/user.queue'
+import JWT from 'jsonwebtoken'
 
 const userCache: UserCache = new UserCache()
 
@@ -57,6 +58,11 @@ export class SignUp {
         authQueue.addAuthUserJob('addAuthUserToDB', { value: userDataForCache })
         userQueue.addUserJob('addUserToDB', { value: userDataForCache })
 
+        //token
+        const userJWT: string = SignUp.prototype.signUpToken(authData, userObjectID)
+        //存入session
+        req.session = { jwt: userJWT }
+
         res.status(HTTP_STATUS.CREATED).json({ message: 'User created successfully', authData })
     }
 
@@ -71,6 +77,17 @@ export class SignUp {
             avatarColor,
             createdAt: new Date()
         } as IAuthDocument
+    }
+
+    private signUpToken(data: IAuthDocument, userObjectId: ObjectId): string {
+        //按需选择数据信息添加到cookie
+        //参数1 信息对象 2秘钥(随机生成) 3过期时间
+        return JWT.sign({
+            userId: userObjectId,
+            uId: data.uId,
+            email: data.email,
+            avatarColor: data.avatarColor
+        }, config.JWT_TOKEN!)
     }
 
     private userData(data: IAuthDocument, userObjectId: ObjectId): IUserDocument {
