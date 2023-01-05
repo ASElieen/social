@@ -15,10 +15,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@bull-board/express": "^4.10.1",
+    "@bull-board/ui": "^4.10.1",
     "@socket.io/redis-adapter": "8.0.0",
     "@types/jsonwebtoken": "^9.0.0",
     "@types/lodash": "^4.14.191",
     "bcryptjs": "^2.4.3",
+    "bull": "^4.10.2",
     "bunyan": "^1.8.15",
     "cloudinary": "^1.33.0",
     "compression": "^1.7.4",
