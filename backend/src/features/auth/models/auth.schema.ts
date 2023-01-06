@@ -17,7 +17,7 @@ const authSchema: Schema = new Schema(
     },
     {
         toJSON: {
-            transform(_doc, ret) {
+            transform(_doc: any, ret) {
                 delete ret.password
                 return ret
             }

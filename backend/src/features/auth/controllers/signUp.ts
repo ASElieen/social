@@ -12,7 +12,6 @@ import HTTP_STATUS from 'http-status-codes'
 import { IUserDocument } from '@user/userInterfaces/user.interface'
 import { UserCache } from '@services/redis/user.cache'
 import { config } from '@root/config'
-import { omit } from 'lodash'
 import { authQueue } from '@services/queues/auth.queue'
 import { userQueue } from '@services/queues/user.queue'
 import JWT from 'jsonwebtoken'
@@ -41,6 +40,7 @@ export class SignUp {
             password,
             avatarColor
         })
+
         //始终保持publicId为userObjectID，并且不被覆盖
         const result: UploadApiResponse = await uploads(avatarImage, `${userObjectID}`, true, true) as UploadApiResponse
         if (!result?.public_id) {
@@ -49,12 +49,11 @@ export class SignUp {
 
         //redis cache
         const userDataForCache: IUserDocument = SignUp.prototype.userData(authData, userObjectID)
+
         userDataForCache.profilePicture = `https://res.cloudinary.com/${config.CLOUD_NAME}/image/upload/v${result.version}/${userObjectID}`
         await userCache.saveUserToCache(`${userObjectID}`, uId, userDataForCache)
 
         //database
-        //删掉数组里对应的数据
-        omit(userDataForCache, ['uId', 'username', 'email', 'avatarColor', 'password'])
         authQueue.addAuthUserJob('addAuthUserToDB', { value: userDataForCache })
         userQueue.addUserJob('addUserToDB', { value: userDataForCache })
 

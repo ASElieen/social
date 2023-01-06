@@ -40,7 +40,7 @@ specifiers:
   redis: ^4.5.1
   socket.io: ^4.5.4
   ts-node: ^10.9.1
-  tsconfig-paths: ^4.1.1
+  tsconfig-paths: ^4.1.2
   ttypescript: ^1.5.15
   typescript: ^4.9.4
   typescript-transform-paths: ^3.4.4
@@ -72,7 +72,6 @@ dependencies:
   redis: 4.5.1
   socket.io: 4.5.4
   ttypescript: 1.5.15_z6wznmtyb6ovnulj6iujpct7um
-  typescript: 4.9.4
   typescript-transform-paths: 3.4.4_typescript@4.9.4
 
 devDependencies:
@@ -90,7 +89,8 @@ devDependencies:
   eslint-config-prettier: 8.5.0_eslint@8.31.0
   prettier: 2.8.1
   ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
-  tsconfig-paths: 4.1.1
+  tsconfig-paths: 4.1.2
+  typescript: 4.9.4
 
 packages:
 
@@ -3666,8 +3666,8 @@ packages:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
 
-  /tsconfig-paths/4.1.1:
-    resolution: {integrity: sha512-VgPrtLKpRgEAJsMj5Q/I/mXouC6A/7eJ/X4Nuk6o0cRPwBtznYxTCU4FodbexbzH9somBPEXYi0ZkUViUpJ21Q==}
+  /tsconfig-paths/4.1.2:
+    resolution: {integrity: sha512-uhxiMgnXQp1IR622dUXI+9Ehnws7i/y6xvpZB9IbUVOPy0muvdvgXeZOn88UcGPiT98Vp3rJPTa8bFoalZ3Qhw==}
     engines: {node: '>=6'}
     dependencies:
       json5: 2.2.3

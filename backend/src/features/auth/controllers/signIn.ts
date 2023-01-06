@@ -7,6 +7,8 @@ import { authService } from '@services/db/auth.service'
 import { BadRequestError } from '@global/helpers/errorHandler'
 import { loginSchema } from '../schemas/signin'
 import { IAuthDocument } from '../interfaces/auth.interface'
+import { IUserDocument } from '@user/userInterfaces/user.interface'
+import { userService } from '@services/db/user.service'
 
 export class SignIn {
     @joiValidation(loginSchema)
@@ -22,8 +24,11 @@ export class SignIn {
             throw new BadRequestError('密码错误 请重试')
         }
 
+        //用mongo在auth中生成的_id去user里找一个对应的完整user
+        const user: IUserDocument = await userService.getUserByAuthId(`${existingUser._id}`)
+
         const userJWT: string = JWT.sign({
-            userId: existingUser._id,
+            userId: user._id,
             uId: existingUser.uId,
             email: existingUser.email,
             username: existingUser.username,

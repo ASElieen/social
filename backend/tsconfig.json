@@ -60,5 +60,9 @@
         "src/share/services/redis/*"
       ]
     }
-  }
+  },
+  "include": [
+    "./**/*.ts",
+    "./**/*.tsx"
+  ],
 }
