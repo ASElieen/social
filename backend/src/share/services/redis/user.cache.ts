@@ -3,6 +3,7 @@ import { IUserDocument } from '@user/userInterfaces/user.interface'
 import Logger from 'bunyan'
 import { config } from '@root/config'
 import { ServerError } from '@helpers/errorHandler'
+import { Helpers } from '@global/helpers/helpers'
 
 const log: Logger = config.createLogger('redisConnection')
 
@@ -73,6 +74,29 @@ export class UserCache extends BaseCache {
             await this.client.ZADD('user', { score: parseInt(userUId, 10), value: `${key}` })
             await this.client.HSET(`users:${key}`, dataToSave)
 
+        } catch (error) {
+            log.error(error)
+            throw new ServerError('服务器错误 再试一次')
+        }
+    }
+
+    public async getUserFromCache(key: string): Promise<IUserDocument | null> {
+        try {
+            if (!this.client.isOpen) {
+                await this.client.connect()
+            }
+
+            const resp: IUserDocument = await this.client.HGETALL(`users:${key}`) as unknown as IUserDocument
+            resp.createdAt = new Date(Helpers.parseJSON(`${resp.createdAt}`))
+            resp.postsCount = Helpers.parseJSON(`${resp.postsCount}`)
+            resp.blocked = Helpers.parseJSON(`${resp.blocked}`)
+            resp.blockedBy = Helpers.parseJSON(`${resp.blockedBy}`)
+            resp.notifications = Helpers.parseJSON(`${resp.notifications}`)
+            resp.social = Helpers.parseJSON(`${resp.social}`)
+            resp.followersCount = Helpers.parseJSON(`${resp.followersCount}`)
+            resp.followingCount = Helpers.parseJSON(`${resp.followingCount}`)
+
+            return resp
         } catch (error) {
             log.error(error)
             throw new ServerError('服务器错误 再试一次')

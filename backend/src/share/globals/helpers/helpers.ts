@@ -18,4 +18,12 @@ export class Helpers {
         }
         return parseInt(result, 10)
     }
+
+    static parseJSON(prop: string): any {
+        try {
+            JSON.parse(prop)
+        } catch (error) {
+            return prop
+        }
+    }
 }
