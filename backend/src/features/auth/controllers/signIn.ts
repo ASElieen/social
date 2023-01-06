@@ -36,6 +36,17 @@ export class SignIn {
         }, config.JWT_TOKEN!)
 
         req.session = ({ jwt: userJWT })
-        res.status(HTTP_STATUS.OK).json({ message: '登录成功', user: existingUser, token: userJWT })
+
+        const userDocument: IUserDocument = {
+            ...user,
+            authId: existingUser._id,
+            username: existingUser.username,
+            email: existingUser.email,
+            avatarColor: existingUser.avatarColor,
+            uId: existingUser.uId,
+            createdAt: existingUser.createdAt
+        } as IUserDocument
+
+        res.status(HTTP_STATUS.OK).json({ message: '登录成功', user: userDocument, token: userJWT })
     }
 }
