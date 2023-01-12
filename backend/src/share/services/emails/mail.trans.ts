@@ -25,7 +25,7 @@ class MailTransport {
         }
     }
 
-    private async developmentEmailSender(receiveEmail: string, subject: string, body: string): Promise<void> {
+    private async developmentEmailSender(receiverEmail: string, subject: string, body: string): Promise<void> {
         // create reusable transporter object using the default SMTP transport
         const transporter: Mail = nodemailer.createTransport({
             host: 'smtp.ethereal.email',
@@ -39,7 +39,7 @@ class MailTransport {
 
         const mailOptions: IMailOptions = {
             from: `MyApp <${config.SENDER_EMAIL}>`,
-            to: receiveEmail,
+            to: receiverEmail,
             subject,
             html: body
         }
