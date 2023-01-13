@@ -27,8 +27,9 @@ const config: Config.InitialOptions = {
         '@global/(.*)': ['<rootDir>/src/share/globals/$1'],
         '@services/(.*)': ['<rootDir>/src/share/services/$1'],
         '@sockets/(.*)': ['<rootDir>/src/share/sockets/$1'],
-        '@worker/(.*)': ['<rootDir>/src/share/workers/$1'],
+        '@workers/(.*)': ['<rootDir>/src/share/workers/$1'],
         '@root/(.*)': ['<rootDir>/src/$1'],
+        '@helpers/(.*)': ['<rootDir>/src/share/globals/helpers/$1']
     }
 }
 

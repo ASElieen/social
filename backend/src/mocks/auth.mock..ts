@@ -17,7 +17,7 @@ export interface IAuthMock {
     avatarImage?: string;
 }
 
-export const authMockRequest = (sessionData: IJWT, body: IAuthMock, currentUser: AuthPayload | null, params?: any) => ({
+export const authMockRequest = (sessionData: IJWT, body: IAuthMock, currentUser?: AuthPayload | null, params?: any) => ({
     session: sessionData,
     body,
     params,
