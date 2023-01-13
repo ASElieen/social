@@ -35,9 +35,11 @@ specifiers:
   helmet: ^6.0.1
   hpp: ^0.2.3
   http-status-codes: ^2.2.0
+  ip: ^1.1.8
   joi: ^17.7.0
   jsonwebtoken: ^9.0.0
   lodash: ^4.17.21
+  moment: ^2.29.4
   mongodb: ^4.13.0
   mongoose: ^6.8.2
   nodemailer: ^6.8.0
@@ -71,9 +73,11 @@ dependencies:
   helmet: 6.0.1
   hpp: 0.2.3
   http-status-codes: 2.2.0
+  ip: 1.1.8
   joi: 17.7.0
   jsonwebtoken: 9.0.0
   lodash: 4.17.21
+  moment: 2.29.4
   mongodb: 4.13.0
   mongoose: 6.8.2
   nodemailer: 6.8.0
@@ -2672,7 +2676,6 @@ packages:
   /ip/1.1.8:
     resolution: {integrity: sha512-PuExPYUiu6qMBQb4l06ecm6T6ujzhmh+MeJcW9wa89PoAz5pvd4zPgN5WJV104mb6S2T1AwNIAaB70JNrLQWhg==}
     dev: false
-    optional: true
 
   /ip/2.0.0:
     resolution: {integrity: sha512-WKa+XuLG1A1R0UWhl2+1XQSi+fZWMsYKffMZTTYsiZaUD8k2yDAj5atimTUD2TZkyCkNEeYE5NhFZmupOGtjYQ==}
@@ -2948,7 +2951,6 @@ packages:
     resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
     requiresBuild: true
     dev: false
-    optional: true
 
   /mongodb-connection-string-url/2.6.0:
     resolution: {integrity: sha512-WvTZlI9ab0QYtTYnuMLgobULWhokRjtC7db9LtcVfJ+Hsnyr5eo6ZtNAt3Ly24XZScGMelOcGtm7lSn0332tPQ==}

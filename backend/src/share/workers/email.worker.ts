@@ -9,7 +9,6 @@ class EmailWorker {
     async addNotificationEmail(job: Job, done: DoneCallback): Promise<void> {
         try {
             const { template, receiverEmail, subject } = job.data
-            console.log('1111')
             await mailTransport.sendEmail(receiverEmail, subject, template)
             //向外部提供进度信息
             job.progress(100)
