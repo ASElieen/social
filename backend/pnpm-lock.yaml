@@ -13,6 +13,7 @@ specifiers:
   '@types/ejs': ^3.1.1
   '@types/express': ^4.17.15
   '@types/hpp': ^0.2.2
+  '@types/ip': ^1.1.0
   '@types/jsonwebtoken': ^9.0.0
   '@types/lodash': ^4.14.191
   '@types/node': ^18.11.18
@@ -95,6 +96,7 @@ devDependencies:
   '@types/ejs': 3.1.1
   '@types/express': 4.17.15
   '@types/hpp': 0.2.2
+  '@types/ip': 1.1.0
   '@types/node': 18.11.18
   '@types/nodemailer': 6.4.7
   '@typescript-eslint/eslint-plugin': 5.47.1_axni7f4fgvh6tlufnh6hwgsifq
@@ -1281,6 +1283,12 @@ packages:
     resolution: {integrity: sha512-BLgsawqFFbS3tFUr+mcBRfst+DumnSfi4PgyNeJAGk0eIxm7lKX1axmHVlbgKNAZS0caZA5/LSopuj0T2LKRPw==}
     dependencies:
       '@types/express': 4.17.15
+    dev: true
+
+  /@types/ip/1.1.0:
+    resolution: {integrity: sha512-dwNe8gOoF70VdL6WJBwVHtQmAX4RMd62M+mAB9HQFjG1/qiCLM/meRy95Pd14FYBbEDwCq7jgJs89cHpLBu4HQ==}
+    dependencies:
+      '@types/node': 18.11.18
     dev: true
 
   /@types/json-schema/7.0.11:
