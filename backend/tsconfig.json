@@ -58,7 +58,10 @@
       ],
       "@redis/*": [
         "src/share/services/redis/*"
-      ]
+      ],
+      "@post/*": [
+        "src/features/post/*"
+      ],
     }
   },
   "include": [
