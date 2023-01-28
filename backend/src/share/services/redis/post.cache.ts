@@ -63,7 +63,7 @@ export class PostCache extends BaseCache {
             //拿到表中对应字段的值
             const postCount: string[] = await this.client.HMGET(`users:${currentUserId}`, 'postsCount')
             //multi标记事务块的开始 命令会按顺序放入队列中
-            const multi = this.client.multi()
+            const multi: ReturnType<typeof this.client.multi> = this.client.multi()
             multi.ZADD('post', { score: parseInt(uId, 10), value: `${key}` })
             multi.HSET(`posts:${key}`, dataToSave)
             const count: number = parseInt(postCount[0], 10) + 1
