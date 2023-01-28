@@ -1,7 +1,7 @@
 import { Server, Socket } from 'socket.io'
 
 //类外也可以操作io
-let socketIOPostObject: Server
+export let socketIOPostObject: Server
 
 export class SocketIOPostHandler {
     private io: Server

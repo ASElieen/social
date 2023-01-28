@@ -5,6 +5,8 @@ import { postSchema } from '../schemes/post.scheme'
 import { ObjectId } from 'mongodb'
 import { IPostDocument } from '../interfaces/post.interface'
 import { PostCache } from '@services/redis/post.cache'
+import { socketIOPostObject } from '../../../share/sockets/post'
+import { postQueue } from '@services/queues/post.queue'
 
 const postCache: PostCache = new PostCache()
 
@@ -45,6 +47,11 @@ export class Create {
             uId: `${req.currentUser!.uId}`,
             createdPost
         })
+
+        //emit发送addpost事件
+        socketIOPostObject.emit('add post', createdPost)
+
+        postQueue.addPostJob('addPostToDB', { key: req.currentUser!.userId, value: createdPost })
 
         res.status(HTTP_STATUS.CREATED).json({ message: '已成功创建post请求,数据发布成功' })
     }

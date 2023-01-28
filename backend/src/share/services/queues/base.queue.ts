@@ -4,8 +4,9 @@ import { createBullBoard, BullAdapter, ExpressAdapter } from '@bull-board/expres
 import { config } from '@root/config'
 import { IAuthJob } from '@auth/interfaces/auth.interface'
 import { IEmailJob } from '@user/userInterfaces/user.interface'
+import { IPostJobData } from '@post/interfaces/post.interface'
 
-type IBaseJobData = IAuthJob | IEmailJob
+type IBaseJobData = IAuthJob | IEmailJob | IPostJobData
 
 let bullAdapters: BullAdapter[] = []
 
