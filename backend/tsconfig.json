@@ -4,7 +4,9 @@
     "module": "commonjs",
     "lib": [
       "DOM",
-      "ES2015"
+      "ES2015",
+      "ES2016",
+      "dom.iterable"
     ],
     "baseUrl": ".",
     "outDir": "./build",

@@ -5,8 +5,12 @@ import { ServerError } from '@global/helpers/errorHandler'
 import { ISavePostToCache } from '@post/interfaces/post.interface'
 import { IPostDocument, IReactions } from '@post/interfaces/post.interface'
 import { Helpers } from '@global/helpers/helpers'
+import { RedisCommandRawReply } from '@redis/client/dist/lib/commands'
+
 
 const log: Logger = config.createLogger('postCache')
+
+export type PostCacheMultiType = string | number | Buffer | RedisCommandRawReply[] | IPostDocument | IPostDocument[]
 
 export class PostCache extends BaseCache {
     constructor() {
@@ -90,10 +94,9 @@ export class PostCache extends BaseCache {
             for (const value of reply) {
                 multi.HGETALL(`posts:${value}`)
             }
-            //暂时any
-            const replies: any = await multi.exec()
+            const replies: PostCacheMultiType = await multi.exec() as PostCacheMultiType
             const postReplies: IPostDocument[] = []
-            for (const post of replies) {
+            for (const post of replies as IPostDocument[]) {
                 post.commentsCount = Helpers.parseJSON(`${post.commentsCount}`) as number
                 post.reactions = Helpers.parseJSON(`${post.reactions}`) as IReactions
                 post.createdAt = new Date(Helpers.parseJSON(`${post.createdAt}`)) as Date
