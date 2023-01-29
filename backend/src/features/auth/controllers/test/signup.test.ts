@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { authMockRequest, authMockResponse } from '../../../../mocks/auth.mock.'
+import { authMockRequest, authMockResponse } from '../../../../mocks/auth.mock'
 import { SignUp } from '../signUp'
 import { CustomError } from '@global/helpers/errorHandler'
 
