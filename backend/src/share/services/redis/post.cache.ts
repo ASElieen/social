@@ -3,6 +3,8 @@ import Logger from 'bunyan'
 import { config } from '@root/config'
 import { ServerError } from '@global/helpers/errorHandler'
 import { ISavePostToCache } from '@post/interfaces/post.interface'
+import { IPostDocument, IReactions } from '@post/interfaces/post.interface'
+import { Helpers } from '@global/helpers/helpers'
 
 const log: Logger = config.createLogger('postCache')
 
@@ -74,5 +76,35 @@ export class PostCache extends BaseCache {
             log.error(error)
             throw new ServerError('存入redis时发生错误')
         }
+    }
+
+    public async getPostsFromCache(key: string, start: number, end: number): Promise<IPostDocument[]> {
+        try {
+            if (!this.client.isOpen) {
+                await this.client.connect()
+            }
+            //返回下标区间内的有序集合成员
+            const reply: string[] = await this.client.ZRANGE(key, start, end, { REV: true })
+            //Hgetall返回一条完整hash 需要全部hash的话得用multi
+            const multi: ReturnType<typeof this.client.multi> = this.client.multi()
+            for (const value of reply) {
+                multi.HGETALL(`posts:${value}`)
+            }
+            //暂时any
+            const replies: any = await multi.exec()
+            const postReplies: IPostDocument[] = []
+            for (const post of replies) {
+                post.commentsCount = Helpers.parseJSON(`${post.commentsCount}`) as number
+                post.reactions = Helpers.parseJSON(`${post.reactions}`) as IReactions
+                post.createdAt = new Date(Helpers.parseJSON(`${post.createdAt}`)) as Date
+                postReplies.push(post)
+            }
+
+            return postReplies
+        } catch (error) {
+            log.error(error)
+            throw new ServerError('从redis中取出post数据时发生错误')
+        }
+
     }
 }
