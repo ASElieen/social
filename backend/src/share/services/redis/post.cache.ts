@@ -88,6 +88,7 @@ export class PostCache extends BaseCache {
                 await this.client.connect()
             }
             //返回下标区间内的有序集合成员
+            //TODO:所有的REV都会报参数错误
             const reply: string[] = await this.client.ZRANGE(key, start, end, { REV: true })
             //Hgetall返回一条完整hash 需要全部hash的话得用multi
             const multi: ReturnType<typeof this.client.multi> = this.client.multi()
