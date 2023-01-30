@@ -108,6 +108,92 @@ export class PostCache extends BaseCache {
             log.error(error)
             throw new ServerError('从redis中取出post数据时发生错误')
         }
+    }
 
+    public async getPostCountInCache(): Promise<number> {
+        try {
+            if (!this.client.isOpen) {
+                await this.client.connect()
+            }
+            //ZCARD返回有序集合中元素的数量
+            const count: number = await this.client.ZCARD('post')
+            return count
+        } catch (error) {
+            log.error(error)
+            throw new ServerError('获取post总数时发生错误')
+        }
+    }
+
+    public async getPostFromImagesFromCache(key: string, start: number, end: number): Promise<IPostDocument[]> {
+        try {
+            if (!this.client.isOpen) {
+                await this.client.connect()
+            }
+            //返回下标区间内的有序集合成员
+            const reply: string[] = await this.client.ZRANGE(key, start, end, { REV: true })
+            //Hgetall返回一条完整hash 需要全部hash的话得用multi
+            const multi: ReturnType<typeof this.client.multi> = this.client.multi()
+            for (const value of reply) {
+                multi.HGETALL(`posts:${value}`)
+            }
+            const replies: PostCacheMultiType = await multi.exec() as PostCacheMultiType
+            const postWithImages: IPostDocument[] = []
+            for (const post of replies as IPostDocument[]) {
+                if (post.imgId && post.imgVersion || post.gifUrl) {
+                    post.commentsCount = Helpers.parseJSON(`${post.commentsCount}`) as number
+                    post.reactions = Helpers.parseJSON(`${post.reactions}`) as IReactions
+                    post.createdAt = new Date(Helpers.parseJSON(`${post.createdAt}`)) as Date
+                    postWithImages.push(post)
+                }
+            }
+
+            return postWithImages
+        } catch (error) {
+            log.error(error)
+            throw new ServerError('从redis中取出post(images)数据时发生错误')
+        }
+    }
+
+    //获取同一个用户的所有post
+    public async getUserPosts(key: string, uId: number): Promise<IPostDocument[]> {
+        try {
+            if (!this.client.isOpen) {
+                await this.client.connect()
+            }
+            //拿到同一个用户的post
+            const reply: string[] = await this.client.ZRANGE(key, uId, uId, { REV: true, BY: 'SCORE' })
+            //Hgetall返回一条完整hash 需要全部hash的话得用multi
+            const multi: ReturnType<typeof this.client.multi> = this.client.multi()
+            for (const value of reply) {
+                multi.HGETALL(`posts:${value}`)
+            }
+            const replies: PostCacheMultiType = await multi.exec() as PostCacheMultiType
+            const postReplies: IPostDocument[] = []
+            for (const post of replies as IPostDocument[]) {
+                post.commentsCount = Helpers.parseJSON(`${post.commentsCount}`) as number
+                post.reactions = Helpers.parseJSON(`${post.reactions}`) as IReactions
+                post.createdAt = new Date(Helpers.parseJSON(`${post.createdAt}`)) as Date
+                postReplies.push(post)
+            }
+
+            return postReplies
+        } catch (error) {
+            log.error(error)
+            throw new ServerError('从redis中获取用户所有post数据时发生错误')
+        }
+    }
+
+    public async getUserPostCountInCache(uId: number): Promise<number> {
+        try {
+            if (!this.client.isOpen) {
+                await this.client.connect()
+            }
+            //zcount返回min max之间的成员数量
+            const count: number = await this.client.ZCOUNT('post', uId, uId)
+            return count
+        } catch (error) {
+            log.error(error)
+            throw new ServerError('获取用户post总数时发生错误')
+        }
     }
 }
