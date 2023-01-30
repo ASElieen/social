@@ -88,8 +88,8 @@ export class PostCache extends BaseCache {
                 await this.client.connect()
             }
             //返回下标区间内的有序集合成员
-            //TODO:所有的REV都会报参数错误
-            const reply: string[] = await this.client.ZRANGE(key, start, end, { REV: true })
+            //REV:true不生效 用reverse替代
+            const reply: string[] = await (await this.client.ZRANGE(key, start, end)).reverse()
             //Hgetall返回一条完整hash 需要全部hash的话得用multi
             const multi: ReturnType<typeof this.client.multi> = this.client.multi()
             for (const value of reply) {
@@ -131,7 +131,7 @@ export class PostCache extends BaseCache {
                 await this.client.connect()
             }
             //返回下标区间内的有序集合成员
-            const reply: string[] = await this.client.ZRANGE(key, start, end, { REV: true })
+            const reply: string[] = await (await this.client.ZRANGE(key, start, end)).reverse()
             //Hgetall返回一条完整hash 需要全部hash的话得用multi
             const multi: ReturnType<typeof this.client.multi> = this.client.multi()
             for (const value of reply) {
@@ -162,7 +162,7 @@ export class PostCache extends BaseCache {
                 await this.client.connect()
             }
             //拿到同一个用户的post
-            const reply: string[] = await this.client.ZRANGE(key, uId, uId, { REV: true, BY: 'SCORE' })
+            const reply: string[] = await (await this.client.ZRANGE(key, uId, uId, { BY: 'SCORE' })).reverse()
             //Hgetall返回一条完整hash 需要全部hash的话得用multi
             const multi: ReturnType<typeof this.client.multi> = this.client.multi()
             for (const value of reply) {
