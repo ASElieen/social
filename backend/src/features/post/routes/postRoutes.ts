@@ -3,6 +3,7 @@ import { authMiddleware } from '@global/helpers/authMiddleware'
 import { Create } from '../controllers/createPost'
 import { Get } from '../controllers/getPosts'
 import { Delete } from '../controllers/deletePost'
+import { Update } from '../controllers/updatePost'
 
 class PostRoutes {
     private router: Router
@@ -21,6 +22,10 @@ class PostRoutes {
 
         //删
         this.router.delete('/post/:postId', authMiddleware.checkAuthentication, Delete.prototype.post)
+
+        //更
+        //put相比于post 必须存在一个明确的对象
+        this.router.put('/post/:postId', authMiddleware.checkAuthentication, Update.prototype.post)
         return this.router
     }
 }
