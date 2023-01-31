@@ -219,4 +219,45 @@ export class PostCache extends BaseCache {
             throw new ServerError('从redis中删除post数据时出现错误')
         }
     }
+
+    public async updatePostInCache(key: string, updatePost: IPostDocument): Promise<IPostDocument> {
+        const { post, bgColor, feelings, privacy, gifUrl, imgVersion, imgId, profilePicture } = updatePost
+
+        const firstList: string[] = [
+            'post', `${post}`,
+            'bgColor', `${bgColor}`,
+            'feelings', `${feelings}`,
+            'privacy', `${privacy}`,
+            'gifUrl', `${gifUrl}`,
+        ]
+
+        const secondList: string[] = [
+            'profilePicture', `${profilePicture}`,
+            'imgVersion', `${imgVersion}`,
+            'imgId', `${imgId}`,
+        ]
+
+        const dataToSave: string[] = [...firstList, ...secondList]
+        try {
+            if (!this.client.isOpen) {
+                await this.client.connect()
+            }
+
+            await this.client.HSET(`posts:${key}`, dataToSave)
+
+            const multi: ReturnType<typeof this.client.multi> = this.client.multi()
+            multi.HGETALL(`posts:${key}`)
+            const reply: PostCacheMultiType = await multi.exec() as PostCacheMultiType
+
+            const postReply = reply as IPostDocument[]
+            postReply[0].commentsCount = Helpers.parseJSON(`${postReply[0].commentsCount}`) as number
+            postReply[0].reactions = Helpers.parseJSON(`${postReply[0].reactions}`) as IReactions
+            postReply[0].createdAt = Helpers.parseJSON(`${postReply[0].createdAt}`) as Date
+
+            return postReply[0]
+        } catch (error) {
+            log.error(error)
+            throw new ServerError('在redis中更新post数据时出现错误')
+        }
+    }
 }
