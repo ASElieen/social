@@ -41,6 +41,12 @@ class PostService {
         const counts: number = await PostModel.find({}).countDocuments()
         return counts
     }
+
+    public async deletePost(postId: string, userId: string): Promise<void> {
+        const deletePost = PostModel.deleteOne({ _id: postId })
+        const decrementPostsCount = UserModel.updateOne({ _id: userId }, { $inc: { postsCount: -1 } })
+        await Promise.all([deletePost, decrementPostsCount])
+    }
 }
 
 export const postService: PostService = new PostService()
