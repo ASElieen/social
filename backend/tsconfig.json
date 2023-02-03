@@ -64,6 +64,9 @@
       "@post/*": [
         "src/features/post/*"
       ],
+      "@reaction/*": [
+        "src/features/reactions/*"
+      ]
     }
   },
   "include": [
