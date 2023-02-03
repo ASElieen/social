@@ -26,6 +26,7 @@ class PostRoutes {
         //更
         //put相比于post 必须存在一个明确的对象
         this.router.put('/post/:postId', authMiddleware.checkAuthentication, Update.prototype.post)
+        this.router.put('/post/image/:postId', authMiddleware.checkAuthentication, Update.prototype.postWithImage)
         return this.router
     }
 }
