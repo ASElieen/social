@@ -4,6 +4,7 @@ import { serverAdapter } from '@services/queues/base.queue'
 import { currentUserRoute } from './features/auth/routes/currentRoute'
 import { authMiddleware } from '@global/helpers/authMiddleware'
 import { postRoutes } from './features/post/routes/postRoutes'
+import { reactionRoutes } from '@reaction/routes/reactionRoute'
 
 const BASE_PATH = '/api/v1'
 
@@ -15,6 +16,7 @@ export default (app: Application): void => {
 
         app.use(BASE_PATH, authMiddleware.verifyUser, currentUserRoute.routes())
         app.use(BASE_PATH, authMiddleware.verifyUser, postRoutes.routes())
+        app.use(BASE_PATH, authMiddleware.verifyUser, reactionRoutes.routes())
     }
     routes()
 }
