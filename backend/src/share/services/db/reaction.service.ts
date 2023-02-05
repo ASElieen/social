@@ -4,6 +4,9 @@ import { ReactionModel } from '@root/features/reactions/models/reaction.schema'
 import { PostModel } from '@root/features/post/models/post.schema'
 import { omit } from 'lodash'
 import { IReactionDocument } from '@reaction/interfaces/reaction.interface'
+import { IQueryReaction } from '@reaction/interfaces/reaction.interface'
+import mongoose from 'mongoose'
+import { Helpers } from '@global/helpers/helpers'
 
 const userCache: UserCache = new UserCache()
 
@@ -49,6 +52,29 @@ class ReactionService {
                 { new: true }
             )
         ])
+    }
+
+    public async getPostReactions(query: IQueryReaction, sort: Record<string, 1 | -1>): Promise<[IReactionDocument[], number]> {
+        const reactions: IReactionDocument[] = await ReactionModel.aggregate([
+            { $match: query },
+            { $sort: sort }
+        ])
+        return [reactions, reactions.length]
+    }
+
+    public async getSinglePostReactionsByUsername(postId: string, username: string): Promise<[IReactionDocument, number] | []> {
+        const reactions: IReactionDocument[] = await ReactionModel.aggregate([
+            { $match: { postId: new mongoose.Types.ObjectId(postId), username: Helpers.firstLetterUppercase(username) } }
+        ])
+        return reactions.length ? [reactions[0], 1] : []
+    }
+
+    //获取所有匹配username的reaction
+    public async getReactionsByUsername(username: string): Promise<IReactionDocument[]> {
+        const reactions: IReactionDocument[] = await ReactionModel.aggregate([
+            { $match: { username: Helpers.firstLetterUppercase(username) } }
+        ])
+        return reactions
     }
 }
 
