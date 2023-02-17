@@ -66,6 +66,9 @@
       ],
       "@reaction/*": [
         "src/features/reactions/*"
+      ],
+      "@comments/*": [
+        "src/features/comments/*"
       ]
     }
   },
